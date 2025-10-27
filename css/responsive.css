@@ -1,0 +1,166 @@
+/*
+ * MÓDULO 04: RESPONSIVIDADE (Mobile-First)
+ * - Breakpoint 1: Base (Mobile) < 480px
+ * - Breakpoint 2: Mobile (Landscape) >= 480px
+ * - Breakpoint 3: Tablet >= 768px
+ * - Breakpoint 4: Desktop >= 1024px
+ * - Breakpoint 5: Large Desktop >= 1200px
+*/
+
+/* --- Breakpoint 1: Base (Mobile) --- */
+/* (Estilos padrão, 0px até 767px) */
+
+.main-nav {
+    display: none; /* Esconde o menu desktop por padrão */
+}
+
+/* Estilo do Botão Hambúrguer */
+.menu-toggle-input {
+    display: none; /* Esconde o checkbox */
+}
+
+.menu-toggle-label {
+    display: flex; /* Visível apenas no mobile */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001; /* Fica por cima de tudo */
+}
+
+.hamburger-line {
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-primary-700);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+/* Estilo do Menu Mobile (escondido) */
+.mobile-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed; /* Fica por cima de toda a tela */
+    top: 0;
+    right: -100%; /* Começa escondido fora da tela */
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-neutral-0);
+    z-index: 1000;
+    transition: right 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.mobile-nav ul {
+    list-style: none;
+    text-align: center;
+}
+
+.mobile-nav li {
+    margin: var(--space-32) 0;
+}
+
+.mobile-nav a {
+    font-size: var(--font-size-h2);
+    font-weight: bold;
+    color: var(--color-primary-700);
+}
+
+/* --- A MÁGICA: Quando o checkbox é clicado --- */
+.menu-toggle-input:checked ~ .mobile-nav {
+    right: 0; /* Menu entra na tela */
+}
+
+/* Animação do 'X' do hambúrguer */
+.menu-toggle-input:checked ~ .menu-toggle-label .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+}
+.menu-toggle-input:checked ~ .menu-toggle-label .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle-input:checked ~ .menu-toggle-label .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
+}
+
+/* Ajustes de Layout Mobile */
+.main-header .container {
+    /* Garante que o menu hambúrguer fique no lugar certo */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Grid: Empilha as colunas no mobile */
+.col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+.col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+    grid-column: span 12; /* Todas as colunas ocupam 100% da largura */
+}
+
+.card {
+    /* No mobile, o card da página de projetos ocupa 100% */
+    margin-bottom: var(--space-32);
+}
+
+/* Ajustes de Tipografia Mobile */
+h1 { font-size: 3.2rem; }
+h2 { font-size: 2.8rem; }
+legend { font-size: var(--font-size-h3); }
+
+
+/* --- Breakpoint 2: Mobile (Landscape) --- */
+@media (min-width: 480px) {
+    /* (Aqui você pode adicionar estilos para celulares maiores) */
+    /* Ex: Fontes levemente maiores */
+    h1 { font-size: 3.6rem; }
+    h2 { font-size: 3.0rem; }
+}
+
+
+/* --- Breakpoint 3: Tablet --- */
+@media (min-width: 768px) {
+    /* (Muitas mudanças acontecem aqui) */
+
+    /* Grid: Volta a ter 2 colunas para os cards */
+    .col-6 {
+        grid-column: span 6;
+    }
+
+    /* Restaura as fontes maiores */
+    h1 { font-size: var(--font-size-h1); }
+    h2 { font-size: var(--font-size-h2); }
+}
+
+
+/* --- Breakpoint 4: Desktop --- */
+@media (min-width: 1024px) {
+    /* (A "versão final" do site) */
+
+    /* Esconde o menu hambúrguer */
+    .menu-toggle-label,
+    .menu-toggle-input {
+        display: none;
+    }
+
+    /* Esconde o menu mobile */
+    .mobile-nav {
+        display: none;
+    }
+
+    /* Mostra o menu desktop */
+    .main-nav {
+        display: block;
+    }
+}
+
+
+/* --- Breakpoint 5: Large Desktop --- */
+@media (min-width: 1200px) {
+    /* (Ajustes finos para telas muito grandes) */
+    
+    /* Aumenta a fonte base, o que aumenta o site todo (via 'rem') */
+    html {
+        font-size: 65%; /* 1rem = 10.4px */
+    }
+}

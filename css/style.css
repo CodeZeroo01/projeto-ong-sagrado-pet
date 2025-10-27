@@ -1,0 +1,17 @@
+/*
+ * ARQUIVO PRINCIPAL DE CSS
+ * Este arquivo importa todos os outros módulos de CSS.
+ * A ordem da importação é importante.
+*/
+
+/* 1. Base (Variáveis, Reset, Estilos Globais) */
+@import url('base.css');
+
+/* 2. Layout (Estrutura principal, Grid, Header, Footer) */
+@import url('layout.css');
+
+/* 3. Componentes (Botões, Cards, Formulários, etc.) */
+@import url('components.css');
+
+/* 4. Responsividade (Media Queries, Mobile-first) */
+@import url('responsive.css');

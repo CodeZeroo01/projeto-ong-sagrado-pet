@@ -1,0 +1,122 @@
+/*
+ * MÓDULO 02: LAYOUT E ESTRUTURA
+ * - Container principal
+ * - Estrutura (Header, Main, Footer)
+ * - Navegação principal (Desktop)
+ * - Sistema de Grid de 12 colunas
+*/
+
+/* --- Container Principal --- */
+/* Usamos esta classe para limitar a largura do conteúdo e centralizá-lo */
+.container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--space-24);  /* Espaçamento de segurança nas laterais */
+    padding-right: var(--space-24);
+}
+
+/* --- Estrutura Principal (Header, Main, Footer) --- */
+
+/* Usamos Flexbox para o <body> para garantir que o rodapé
+   fique no final, mesmo em páginas com pouco conteúdo.
+*/
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Altura mínima de 100% da tela */
+}
+
+/* O <main> cresce para ocupar o espaço disponível */
+main {
+    flex-grow: 1;
+    padding-top: var(--space-48);
+    padding-bottom: var(--space-64);
+}
+
+/* --- Cabeçalho (Header) e Navegação --- */
+.main-header {
+    background-color: var(--color-neutral-0);
+    padding: var(--space-24) 0;
+    border-bottom: 1px solid var(--color-neutral-400);
+    box-shadow: var(--box-shadow-light);
+}
+
+/* Usamos Flexbox para alinhar o Logo (h1) e a Navegação (nav) */
+.main-header .container {
+    display: flex;
+    justify-content: space-between; /* Logo à esquerda, Nav à direita */
+    align-items: center;
+}
+
+.main-header h1 {
+    font-size: var(--font-size-h3);
+    color: var(--color-primary-700);
+    margin: 0;
+}
+
+.main-nav ul {
+    list-style: none;
+    display: flex; /* Alinha os links da navegação */
+    gap: var(--space-24); /* Espaço entre os links */
+}
+
+.main-nav a {
+    font-size: var(--font-size-p);
+    font-weight: bold;
+    color: var(--color-neutral-800);
+    padding: var(--space-8) 0;
+    border-bottom: 2px solid transparent; /* Efeito de sublinhado */
+    transition: all 0.2s ease;
+}
+
+.main-nav a:hover,
+.main-nav a:focus {
+    color: var(--color-primary-500);
+    border-bottom-color: var(--color-primary-500);
+}
+
+/* --- Rodapé (Footer) --- */
+.main-footer {
+    background-color: var(--color-secondary-700);
+    color: var(--color-neutral-100);
+    padding: var(--space-32) 0;
+    text-align: center;
+}
+
+.main-footer p {
+    font-size: var(--font-size-small);
+}
+
+/* --- Sistema de Grid de 12 Colunas --- */
+/* Este é o nosso sistema de grid customizado, conforme pedido.
+   Ele usa CSS Grid para criar 12 colunas flexíveis.
+*/
+.grid-12 {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); /* 12 colunas de tamanho igual */
+    gap: var(--space-24); /* Espaço entre as colunas */
+}
+
+/* Classes para definir o tamanho das colunas.
+   Ex: .col-4 ocupa 4 das 12 colunas.
+*/
+.col-1 { grid-column: span 1; }
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-5 { grid-column: span 5; }
+.col-6 { grid-column: span 6; }
+.col-7 { grid-column: span 7; }
+.col-8 { grid-column: span 8; }
+.col-9 { grid-column: span 9; }
+.col-10 { grid-column: span 10; }
+.col-11 { grid-column: span 11; }
+.col-12 { grid-column: span 12; }
+
+/* Exemplo de como usaríamos o grid no HTML:
+   <div class="grid-12">
+       <div class="col-8">Conteúdo principal</div>
+       <div class="col-4">Barra lateral</div>
+   </div>
+*/
