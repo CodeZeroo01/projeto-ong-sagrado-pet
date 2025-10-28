@@ -95,3 +95,41 @@ O CSS foi organizado de forma modular para facilitar a manutenção, conforme o 
 * `layout.css` (02): Contém a estrutura do site (header, footer, grid).
 * `components.css` (03): Contém os estilos de componentes (botões, cards, formulários).
 * `responsive.css` (04): Contém todos os `@media` queries para a responsividade.
+
+---
+
+## 🚀 Etapa 3: JavaScript Dinâmico e Single Page Application (SPA)
+
+Esta terceira entrega focou na implementação de JavaScript avançado para transformar a interface estática em uma aplicação web dinâmica e interativa, simulando uma aplicação real.
+
+### 1. Manipulação do DOM: Sistema de SPA Básico
+
+Para atender ao requisito de *Single Page Application* (SPA), o projeto foi refatorado significativamente:
+
+* **HTML Único:** O arquivo `index.html` agora funciona como a "casca" (shell) principal da aplicação. Os arquivos `projetos.html` e `cadastro.html` foram removidos.
+* **Carregamento Dinâmico:** Um "roteador" básico foi criado no arquivo `assets/js/app.js`. Este roteador intercepta os cliques nos links de navegação (usando `e.preventDefault()`).
+* **Injeção de Conteúdo:** A função `loadContent()` é responsável por injetar o HTML do template apropriado (veja abaixo) dentro da tag `<main id="main-content">`, sem a necessidade de recarregar a página.
+* **Histórico de Navegação:** O roteador utiliza `history.pushState()` para atualizar a URL na barra de endereços do navegador e um listener `popstate` para permitir o uso dos botões "Voltar" e "Avançar" do navegador.
+
+### 2. Manipulação do DOM: Templates JavaScript
+
+Para possibilitar a SPA, todo o conteúdo das páginas foi convertido em *templates JavaScript*:
+
+* **Template Literals:** O conteúdo das páginas de "Home" (`homeTemplate`) e "Cadastro" (`cadastroTemplate`) foi movido para dentro de *template literals* (strings com crases `` ` ``) no arquivo `app.js`.
+* **Templates Dinâmicos:** A página de "Campanhas" utiliza uma função (`generateProjectsTemplate()`) que lê um array de objetos (`projectsData`) e gera o HTML dos cards dinamicamente, demonstrando um sistema de templates mais avançado.
+
+### 3. Funcionalidade: Verificação de Consistência de Dados
+
+Para cumprir o requisito de verificação de formulários via JavaScript, foi implementado um sistema de validação customizado na página de cadastro:
+
+* **Validação Nativa Desabilitada:** O atributo `novalidate` foi adicionado à tag `<form>` para desabilitar a validação padrão do HTML5, permitindo que o JavaScript assuma o controle.
+* **Validação na Submissão:** Um listener de evento `submit` foi adicionado ao formulário. Ele chama a função `validateForm()`, que verifica a consistência dos dados (ex: tamanho mínimo do nome, formato do e-mail, comprimento do CPF e telefone).
+* **Feedback ao Usuário:** As funções `showError()` e `clearError()` manipulam o DOM para exibir mensagens de erro claras e específicas para cada campo em um `<span class="error-message"></span>` correspondente. O CSS foi atualizado para estilizar essas mensagens.
+
+### 4. Código JavaScript Modular
+
+O código JavaScript foi organizado de forma modular e por funcionalidade, conforme o requisito:
+
+* **`app.js`:** É o arquivo principal, carregado no HTML como `type="module"`. Ele está internamente organizado por seções: Importações, Templates, Roteamento (SPA), Validação de Formulário e Inicialização.
+* **`masks.js`:** O arquivo de máscaras da Etapa 1 foi refatorado para ser um módulo. Ele agora `export`a uma função `applyMasks()`.
+* **Importação:** O `app.js` importa o módulo de máscaras (`import { applyMasks } from './masks.js'`) e o chama dinamicamente apenas quando o template do formulário de cadastro é carregado.

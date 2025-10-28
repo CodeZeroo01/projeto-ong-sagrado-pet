@@ -159,3 +159,31 @@ legend {
     border-color: var(--color-feedback-error);
     color: var(--color-feedback-error);
 }
+
+/* --- Estilos para Validação JS (Etapa 3) --- */
+
+.form-group {
+    /* Posição relativa para o span de erro absoluto (opcional) */
+    position: relative;
+    padding-bottom: var(--space-16); /* Espaço para a mensagem de erro */
+}
+
+.error-message {
+    font-size: var(--font-size-small);
+    color: var(--color-feedback-error);
+    font-weight: bold;
+    display: block; /* Faz o span ocupar a linha */
+    margin-top: var(--space-8);
+    
+    /* (Opcional) Posição absoluta para ficar logo abaixo do campo
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    */
+}
+
+/* Remove a validação nativa do CSS, já que estamos usando JS */
+.form-group input:invalid {
+    border-color: var(--color-neutral-400); /* Reseta a borda vermelha do CSS */
+    background-color: var(--color-neutral-100);
+}
