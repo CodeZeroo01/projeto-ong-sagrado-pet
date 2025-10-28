@@ -1,21 +1,19 @@
 /*
- * ARQUIVO PRINCIPAL DA APLICAÇÃO (SPA)
+ * ARQUIVO PRINCIPAL DA APLICAÇÃO (SPA) - v2
  * Organizado por funcionalidade:
  * 1. Importações
- * 2. Templates JavaScript (Conteúdo das páginas)
+ * 2. Templates JavaScript
  * 3. Lógica de Roteamento (SPA)
  * 4. Lógica de Validação de Formulário
  * 5. Inicialização
 */
 
 // --- 1. IMPORTAÇÕES ---
-// Importa a função que aplica máscaras do nosso outro arquivo.
 import { applyMasks } from './masks.js';
 
 // --- 2. TEMPLATES JAVASCRIPT ---
-// (Requisito: "Criar sistema de templates JavaScript")
 
-// Template para a Página Inicial (o conteúdo que já estava no index.html)
+// Template para a Página Inicial
 const homeTemplate = `
 <div class="container">
     <section id="hero">
@@ -79,7 +77,6 @@ const projectsData = [
 function generateProjectsTemplate() {
     let projectsHTML = '';
     
-    // Itera sobre os dados e cria um card para cada projeto
     for (const project of projectsData) {
         projectsHTML += `
         <article class="col-6 card">
@@ -96,7 +93,6 @@ function generateProjectsTemplate() {
         `;
     }
 
-    // Retorna o HTML completo da página
     return `
     <div class="container">
         <section id="nossas-campanhas">
@@ -125,8 +121,6 @@ function generateProjectsTemplate() {
 }
 
 // Template para a Página de Cadastro
-// ATUALIZAÇÃO: Adicionamos spans vazios <span class="error-message"></span>
-// para exibir os erros de validação do JavaScript.
 const cadastroTemplate = `
 <div class="container">
     <h2>Faça Parte da Mudança</h2>
@@ -203,158 +197,157 @@ const cadastroTemplate = `
 
 
 // --- 3. LÓGICA DE ROTEAMENTO (SPA) ---
-// (Requisito: "Implementar sistema de Single Page Application (SPA) básico")
 
-// Seleciona a área de conteúdo principal
 const mainContent = document.getElementById('main-content');
-
-// Mapeia os caminhos (href) para os templates
 const routes = {
     'index.html': homeTemplate,
-    'projetos.html': generateProjectsTemplate(), // Executa a função para obter o HTML
+    'projetos.html': generateProjectsTemplate(),
     'cadastro.html': cadastroTemplate,
 };
 
-// Função para carregar o conteúdo da página
+// *** CORREÇÃO: Nova função para vincular (bind) TODOS os links ***
+function bindAllNavLinks() {
+    // Seleciona todos os links que devem acionar o roteador
+    const allLinks = document.querySelectorAll(
+        '.main-nav a, .mobile-nav a, .btn[href], a[href="cadastro.html"]'
+    );
+
+    allLinks.forEach(link => {
+        // Verifica se é um link interno
+        if (!link.getAttribute('href').startsWith('http')) {
+            // Remove o listener antigo (se houver) para evitar duplicatas
+            link.removeEventListener('click', navigateTo);
+            // Adiciona o listener
+            link.addEventListener('click', navigateTo);
+        }
+    });
+}
+
+// Função para carregar o conteúdo
 function loadContent(path) {
-    // Remove o ".html" ou a barra inicial para encontrar a rota
     const routeKey = path.replace('.html', '').replace('/', '');
-    // Se a rota for vazia (ex: "dominio.com/"), usa 'index'
     const key = routeKey === 'index' || routeKey === '' ? 'index.html' : `${routeKey}.html`;
 
-    // Carrega o HTML do template correspondente
-    mainContent.innerHTML = routes[key] || homeTemplate; // Se não achar, vai para home
-    window.scrollTo(0, 0); // Rola para o topo
+    mainContent.innerHTML = routes[key] || homeTemplate;
+    window.scrollTo(0, 0);
 
-    // --- PÓS-CARREGAMENTO ---
-    // Se a página de cadastro foi carregada, aplica as máscaras
+    // Se a página de cadastro foi carregada, aplica as máscaras e validação
     if (key === 'cadastro.html') {
         applyMasks();
-        // Adiciona o listener de validação ao formulário
         initFormValidation(); 
     }
+
+    // *** CORREÇÃO: Chama a função de bind DEPOIS que o novo conteúdo foi carregado ***
+    bindAllNavLinks();
 }
 
 // Função de navegação
 function navigateTo(e) {
-    // Previne o recarregamento da página
     e.preventDefault(); 
-    
-    // Obtém o caminho do link (ex: "projetos.html")
     const path = e.currentTarget.getAttribute('href');
     
-    // Atualiza a URL na barra do navegador
+    // Evita recarregar a mesma página
+    if (window.location.pathname.endsWith(path)) return; 
+
     history.pushState({}, '', path);
-    
-    // Carrega o novo conteúdo
     loadContent(path);
 
-    // Fecha o menu hambúrguer se estiver aberto
     document.getElementById('menu-toggle').checked = false;
 }
 
-// Adiciona o listener de 'popstate' (para o botão "Voltar" do navegador)
 window.addEventListener('popstate', () => {
     loadContent(window.location.pathname);
 });
 
 
 // --- 4. LÓGICA DE VALIDAÇÃO DE FORMULÁRIO ---
-// (Requisito: "Sistema de verificação de consistência de dados em formulários")
 
-// Função para mostrar erro
+// (Esta seção permanece inalterada)
 function showError(fieldId, message) {
     const errorSpan = document.querySelector(`.error-message[data-for="${fieldId}"]`);
     const field = document.getElementById(fieldId);
     if (errorSpan) errorSpan.textContent = message;
     if (field) field.style.borderColor = 'var(--color-feedback-error)';
 }
-
-// Função para limpar erro
 function clearError(fieldId) {
     const errorSpan = document.querySelector(`.error-message[data-for="${fieldId}"]`);
     const field = document.getElementById(fieldId);
     if (errorSpan) errorSpan.textContent = '';
-    if (field) field.style.borderColor = ''; // Volta ao padrão
+    if (field) field.style.borderColor = '';
 }
-
-// Função principal de validação
 function validateForm() {
     let isValid = true;
     
-    // 1. Nome Completo
     const nome = document.getElementById('nome');
     if (nome.value.trim().length < 3) {
         showError('nome', 'Nome deve ter pelo menos 3 caracteres.');
         isValid = false;
-    } else {
-        clearError('nome');
-    }
+    } else { clearError('nome'); }
 
-    // 2. Email
     const email = document.getElementById('email');
-    // Regex simples para formato de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.value)) {
         showError('email', 'Por favor, insira um e-mail válido.');
         isValid = false;
-    } else {
-        clearError('email');
-    }
+    } else { clearError('email'); }
 
-    // 3. CPF (Verificação de consistência - formato)
     const cpf = document.getElementById('cpf');
-    if (cpf.value.length !== 14) { // 000.000.000-00
+    if (cpf.value.length !== 14) {
         showError('cpf', 'CPF deve estar no formato 000.000.000-00.');
         isValid = false;
-    } else {
-        clearError('cpf');
-    }
+    } else { clearError('cpf'); }
     
-    // 4. Telefone
     const telefone = document.getElementById('telefone');
-    if (telefone.value.length !== 15) { // (00) 00000-0000
+    if (telefone.value.length !== 15) {
         showError('telefone', 'Telefone deve estar no formato (00) 00000-0000.');
         isValid = false;
-    } else {
-        clearError('telefone');
-    }
+    } else { clearError('telefone'); }
 
-    // 5. Data de Nascimento
     const data = document.getElementById('data_nascimento');
     if (data.value === '') {
         showError('data_nascimento', 'Data de nascimento é obrigatória.');
         isValid = false;
-    } else {
-        clearError('data_nascimento');
-    }
+    } else { clearError('data_nascimento'); }
 
-    // (Adicione validações para CEP, Endereço, Cidade, Estado...)
+    // (Validações de endereço omitidas por brevidade, mas devem ser adicionadas aqui)
+    const cep = document.getElementById('cep');
+    if (cep.value === '') {
+        showError('cep', 'CEP é obrigatório.');
+        isValid = false;
+    } else { clearError('cep'); }
+
+    const endereco = document.getElementById('endereco');
+    if (endereco.value === '') {
+        showError('endereco', 'Endereço é obrigatório.');
+        isValid = false;
+    } else { clearError('endereco'); }
+
+    const cidade = document.getElementById('cidade');
+    if (cidade.value === '') {
+        showError('cidade', 'Cidade é obrigatória.');
+        isValid = false;
+    } else { clearError('cidade'); }
+
+    const estado = document.getElementById('estado');
+    if (estado.value === '') {
+        showError('estado', 'Estado é obrigatório.');
+        isValid = false;
+    } else { clearError('estado'); }
 
     return isValid;
 }
-
-// Função para inicializar os listeners do formulário
 function initFormValidation() {
     const form = document.getElementById('registration-form');
     if (!form) return;
 
-    // Desativa a validação nativa do HTML5 (novalidate)
-    // para usarmos a nossa validação JS.
-
     form.addEventListener('submit', (e) => {
-        // Previne o envio do formulário
         e.preventDefault(); 
-        
-        // Roda nossa validação
         const isFormValid = validateForm();
 
         if (isFormValid) {
-            // Se for válido, mostra sucesso e limpa o form
             alert('Cadastro realizado com sucesso!');
             form.reset();
         } else {
-            // Se for inválido, o usuário verá as mensagens de erro
             alert('Por favor, corrija os erros no formulário.');
         }
     });
@@ -363,18 +356,8 @@ function initFormValidation() {
 
 // --- 5. INICIALIZAÇÃO ---
 
-// Quando o DOM estiver pronto, configura os listeners de navegação.
+// Quando o DOM estiver pronto, carrega o conteúdo inicial.
+// O 'loadContent' por sua vez chamará o 'bindAllNavLinks' pela primeira vez.
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleciona TODOS os links de navegação (desktop e mobile)
-    const navLinks = document.querySelectorAll('.main-nav a, .mobile-nav a, .btn[href]');
-    
-    navLinks.forEach(link => {
-        // Verifica se é um link interno (não começa com http)
-        if (!link.getAttribute('href').startsWith('http')) {
-            link.addEventListener('click', navigateTo);
-        }
-    });
-
-    // Carrega o conteúdo da página atual (caso o usuário chegue por /projetos.html)
     loadContent(window.location.pathname);
 });
