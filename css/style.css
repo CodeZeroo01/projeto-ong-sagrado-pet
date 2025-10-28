@@ -5,13 +5,13 @@
 */
 
 /* 1. Base (Variáveis, Reset, Estilos Globais) */
-@import url('base.css');
+@import url('base.min.css');
 
 /* 2. Layout (Estrutura principal, Grid, Header, Footer) */
-@import url('layout.css');
+@import url('layout.min.css');
 
 /* 3. Componentes (Botões, Cards, Formulários, etc.) */
-@import url('components.css');
+@import url('components.min.css');
 
 /* 4. Responsividade (Media Queries, Mobile-first) */
-@import url('responsive.css');
+@import url('responsive.min.css');
