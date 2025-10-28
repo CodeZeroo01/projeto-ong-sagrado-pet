@@ -354,10 +354,64 @@ function initFormValidation() {
 }
 
 
-// --- 5. INICIALIZAÇÃO ---
 
-// Quando o DOM estiver pronto, carrega o conteúdo inicial.
-// O 'loadContent' por sua vez chamará o 'bindAllNavLinks' pela primeira vez.
+// --- 5. LÓGICA DE MODO ESCURO (DARK MODE) ---
+
+function initThemeToggle() {
+    const themeToggleButton = document.getElementById('theme-toggle');
+    if (!themeToggleButton) return; // Se o botão não existir, para aqui
+
+    const body = document.body;
+    const luaIcon = '🌙';
+    const solIcon = '☀️';
+
+    // 1. Função para aplicar o tema (seja do localStorage ou o padrão)
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggleButton.textContent = solIcon;
+            localStorage.setItem('theme', 'dark');
+        } else {
+            body.classList.remove('dark-mode');
+            themeToggleButton.textContent = luaIcon;
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // 2. Listener de clique para o botão
+    themeToggleButton.addEventListener('click', () => {
+        // Verifica se o corpo JÁ TEM a classe 'dark-mode'
+        const isDarkMode = body.classList.contains('dark-mode');
+        
+        // Se tiver, o novo tema será 'light'. Se não tiver, será 'dark'.
+        applyTheme(isDarkMode ? 'light' : 'dark');
+    });
+
+    // 3. Verifica no carregamento inicial qual tema usar
+    // (Pega do localStorage OU detecta a preferência do sistema operacional)
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme) {
+        applyTheme(savedTheme); // Aplica o tema salvo
+    } else if (prefersDark) {
+        applyTheme('dark'); // Aplica o tema do SO
+    } else {
+        applyTheme('light'); // Padrão
+    }
+}
+
+
+// --- 6. INICIALIZAÇÃO ---
+// (Esta seção substitui a sua antiga "Seção 5")
+
+// Quando o DOM estiver pronto...
 document.addEventListener('DOMContentLoaded', () => {
-    loadContent(window.location.pathname);
+    
+    // 1. Carrega o conteúdo da rota atual (lógica da SPA)
+    loadContent(window.location.pathname); 
+    
+    // 2. Inicializa o botão de tema (Modo Escuro)
+    // (Como o header está sempre presente, podemos chamar isso na carga inicial)
+    initThemeToggle();
 });
