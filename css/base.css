@@ -50,8 +50,8 @@ h1, h2, h3, h4, h5, h6 {
     
     /* 1. Paleta de Cores (Mínimo 8 cores) */
     /* Primárias (Ex: Laranja "quente" e amigável para pets) */
-    --color-primary-500: #E67E22;
-    --color-primary-700: #D35400;
+    --color-primary-500: #D35400;
+    --color-primary-700: #B84A00;
 
     /* Secundárias (Ex: Marrom "terra", confiável) */
     --color-secondary-500: #8D6E63;
