@@ -1,78 +1,52 @@
 /*
-  Este script aplica máscaras dinâmicas aos campos do formulário
-  quando o usuário digita.
+ * MÓDULO DE MÁSCARAS (Versão Etapa 3 - Modular)
+ * Exporta uma função 'applyMasks' que pode ser chamada
+ * para aplicar as máscaras nos campos corretos.
 */
-document.addEventListener('DOMContentLoaded', () => {
 
-    /**
-     * Função genérica para aplicar uma máscara a um elemento de input.
-     * @param {HTMLInputElement} element - O campo de input (ex: cpfInput).
-     * @param {Function} maskFunction - A função que formata o valor (ex: cpfMask).
-     */
-    const applyMask = (element, maskFunction) => {
-        // O evento 'input' é acionado a cada tecla digitada
+// Funções privadas de máscara
+const cpfMask = (value) => {
+    return value
+        .replace(/\D/g, '') // Remove tudo o que não é dígito
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d{1,2})/, '$1-$2')
+        .substring(0, 14);
+};
+
+const phoneMask = (value) => {
+    return value
+        .replace(/\D/g, '')
+        .replace(/(\d{2})(\d)/, '($1) $2')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .substring(0, 15);
+};
+
+const cepMask = (value) => {
+    return value
+        .replace(/\D/g, '')
+        .replace(/(\d{5})(\d)/, '$1-$2')
+        .substring(0, 9);
+};
+
+// Função privada para aplicar
+const applyMask = (element, maskFunction) => {
+    if (element) {
         element.addEventListener('input', (e) => {
             e.target.value = maskFunction(e.target.value);
         });
-    };
+    }
+};
 
-    /**
-     * Formata um valor para o padrão de CPF (000.000.000-00).
-     * @param {string} value - O valor atual do campo.
-     * @returns {string} - O valor formatado.
-     */
-    const cpfMask = (value) => {
-        return value
-            .replace(/\D/g, '') // Remove tudo o que não é dígito
-            .replace(/(\d{3})(\d)/, '$1.$2') // Bloco 1: 000.
-            .replace(/(\d{3})(\d)/, '$1.$2') // Bloco 2: 000.000.
-            .replace(/(\d{3})(\d{1,2})/, '$1-$2') // Bloco 3: 000.000.000-00
-            .substring(0, 14); // Limita o tamanho máximo
-    };
-
-    /**
-     * Formata um valor para o padrão de Telefone Celular ((00) 00000-0000).
-     * @param {string} value - O valor atual do campo.
-     * @returns {string} - O valor formatado.
-     */
-    const phoneMask = (value) => {
-        return value
-            .replace(/\D/g, '') // Remove tudo o que não é dígito
-            .replace(/(\d{2})(\d)/, '($1) $2') // Bloco 1: (00)
-            .replace(/(\d{5})(\d)/, '$1-$2') // Bloco 2: (00) 00000-
-            .substring(0, 15); // Limita o tamanho máximo
-    };
-
-    /**
-     * Formata um valor para o padrão de CEP (00000-000).
-     * @param {string} value - O valor atual do campo.
-     * @returns {string} - O valor formatado.
-     */
-    const cepMask = (value) => {
-        return value
-            .replace(/\D/g, '') // Remove tudo o que não é dígito
-            .replace(/(\d{5})(\d)/, '$1-$2') // Bloco 1: 00000-
-            .substring(0, 9); // Limita o tamanho máximo
-    };
-
-    // --- Seleciona os elementos (campos) do formulário ---
+// --- FUNÇÃO PÚBLICA QUE SERÁ EXPORTADA ---
+// O 'export' na frente desta linha é o que estava faltando
+// no seu arquivo antigo.
+export function applyMasks() {
     const cpfInput = document.getElementById('cpf');
     const phoneInput = document.getElementById('telefone');
     const cepInput = document.getElementById('cep');
 
-    // --- Aplica as máscaras ---
-    // Verifica se o elemento existe na página antes de aplicar a máscara
-    
-    if (cpfInput) {
-        applyMask(cpfInput, cpfMask);
-    }
-    
-    if (phoneInput) {
-        applyMask(phoneInput, phoneMask);
-    }
-
-    if (cepInput) {
-        applyMask(cepInput, cepMask);
-    }
-
-});
+    applyMask(cpfInput, cpfMask);
+    applyMask(phoneInput, phoneMask);
+    applyMask(cepInput, cepMask);
+}
