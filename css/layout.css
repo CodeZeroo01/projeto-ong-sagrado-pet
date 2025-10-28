@@ -120,3 +120,11 @@ main {
        <div class="col-4">Barra lateral</div>
    </div>
 */
+
+/* --- AJUSTE LAYOUT HEADER (MODO ESCURO) --- */
+
+.header-nav-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24); /* Espaço entre o botão de tema e a nav */
+}

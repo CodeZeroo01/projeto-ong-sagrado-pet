@@ -96,3 +96,24 @@ h2 { font-size: var(--font-size-h2); }
 h3 { font-size: var(--font-size-h3); }
 p { font-size: var(--font-size-p); }
 small { font-size: var(--font-size-small); }
+
+/* --- ESTILOS DO MODO ESCURO --- */
+
+/* Quando o body tiver a classe .dark-mode, estas variáveis
+   vão sobrescrever as variáveis padrão do :root */
+body.dark-mode {
+    /* Fundo (Preto suave) */
+    --color-neutral-100: #121212; 
+    
+    /* Textos (Cinza claro) */
+    --color-neutral-800: #E0E0E0;
+    
+    /* Bordas (Cinza escuro) */
+    --color-neutral-400: #333333; 
+    
+    /* Fundo dos Cards (Cinza mais escuro) */
+    --color-neutral-0: #1E1E1E;   
+    
+    /* Títulos (Quase branco) */
+    --color-neutral-900: #F5F5F5; 
+}
