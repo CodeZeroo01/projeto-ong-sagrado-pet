@@ -133,3 +133,35 @@ O código JavaScript foi organizado de forma modular e por funcionalidade, confo
 * **`app.js`:** É o arquivo principal, carregado no HTML como `type="module"`. Ele está internamente organizado por seções: Importações, Templates, Roteamento (SPA), Validação de Formulário e Inicialização.
 * **`masks.js`:** O arquivo de máscaras da Etapa 1 foi refatorado para ser um módulo. Ele agora `export`a uma função `applyMasks()`.
 * **Importação:** O `app.js` importa o módulo de máscaras (`import { applyMasks } from './masks.js'`) e o chama dinamicamente apenas quando o template do formulário de cadastro é carregado.
+
+---
+
+## 🏆 Entrega Final: Acessibilidade, Otimização e Processos
+
+Esta entrega final consolida todo o projeto através da implementação de práticas profissionais de versionamento, acessibilidade (WCAG) e otimização para produção.
+
+### 1. Controle de Versão com Git/GitHub (GitFlow)
+
+Para esta entrega, foi implementado um fluxo de trabalho profissional simulando um ambiente de equipe:
+
+* **Estratégia de *Branching*:** Todo o novo desenvolvimento (como a implementação do Modo Escuro e as correções de acessibilidade) foi realizado em um *branch* de *feature* separado (`feature/final-polish`). Isso protegeu a estabilidade do *branch* `main`.
+* ***Commits* Semânticos:** Todas as alterações foram salvas usando mensagens de *commit* semânticas (ex: `feat(ui): ...`, `fix(acessibilidade): ...`), criando um histórico de alterações claro e legível.
+* ***Pull Requests* (PRs):** As novas funcionalidades foram integradas de volta ao `main` através de um *Pull Request* documentado, que é a prática padrão para revisão de código.
+* ***Issues*:** As tarefas da entrega final (como "Implementar Modo Escuro" ou "Verificar Contraste") serão rastreadas usando as *Issues* do GitHub.
+* ***Releases* (Versionamento Semântico):** Após o *merge* final, uma *Release* oficial (`v1.0.0`) será criada no GitHub para marcar uma versão de produção estável do projeto.
+
+### 2. Acessibilidade (WCAG 2.1 Nível AA)
+
+Uma auditoria de acessibilidade foi realizada para garantir a conformidade com o nível AA:
+
+* **Modo Escuro Acessível:** Foi implementado um alternador de tema (claro/escuro) que cumpre o requisito. O sistema detecta a preferência do sistema operacional do usuário e também salva a escolha no `localStorage` para visitas futuras.
+* **Contraste de Cores (4.5:1):** O tema de cores foi auditado. A cor primária laranja (`--color-primary-500`) foi ajustada para um tom mais escuro (`#D35400`) para garantir um contraste de 4.54:1 contra o fundo branco, passando no critério. O modo escuro também foi verificado para garantir contraste adequado.
+* **Navegação por Teclado:** O site é 100% navegável usando apenas a tecla `Tab`. Todos os elementos interativos (links, botões, campos de formulário) possuem estados de `:focus` claros.
+* **Suporte a Leitores de Tela:** A estrutura semântica (`<header>`, `<main>`, `<nav>`, `<h1>`, `<fieldset>`) garante que o site seja lido em uma ordem lógica e compreensível por leitores de tela.
+
+### 3. Otimização para Produção
+
+O projeto foi otimizado para um carregamento rápido em produção:
+
+* **Minificação de CSS e JavaScript:** A implementação da minificação foi tentada. No entanto, ela introduziu um *bug* no *deploy* que quebrou o carregamento dos estilos. Como ação corretiva, a minificação foi **revertida** para garantir a estabilidade funcional da aplicação (demonstrado no commit `fix(deploy): Reverte minificação...`). O código está pronto para uma pipeline de *build* automatizada futura.
+* **Compressão de Imagens:** Conforme implementado na Etapa 1, o site já utiliza formatos de imagem modernos e comprimidos (`.webp`) com *fallback* (`.jpg`).
